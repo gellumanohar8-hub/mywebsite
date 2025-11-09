@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>celebUmore — Platform Demo (Admin & Client)</title>
+  <meta name="description" content="celebUmore demo platform — store, upload, track, refund and admin dashboard (frontend demo)." />
+ <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="brand">
+        <div class="logo">CU</div>
+        <div>
+          <div style="font-weight:800">celebUmore</div>
+          <div style="font-size:12px;color:var(--muted)">Moments become Memories</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:center">
+        <div id="clock" title="Local time">--:--</div>
+        <nav id="mainNav">
+          <a id="navHome">Home</a>
+          <a id="navStore">Store</a>
+          <a id="navUpload">Upload</a>
+          <a id="navFeedback">Feedback</a>
+          <a id="navTrack">Track</a>
+          <a id="navLogin">Login</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- HERO / quick -->
+    <section class="hero">
+      <div class="hero-left">
+        <h1>Personalised Digital Gifts & Surprise Experiences</h1>
+        <p class="lead">A demo platform: shop, upload, track orders, request refunds — with Admin & Client dashboards (frontend-only).</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" id="btnShop">Shop Gifts</button>
+          <button class="btn" id="btnUpload">Upload Files</button>
+          <button class="btn" id="btnGenerator">Gift Idea Generator</button>
+          <button class="btn ghost" id="btnLogin">Login / Dashboard</button>
+        </div>
+        <div style="margin-top:12px" class="muted small">Tip: Use Admin to manage orders. Use Client login to place orders & track them.</div>
+      </div>
+
+      <div style="width:360px;max-width:100%" class="card">
+        <h3 style="margin-top:0">Refund Policy</h3>
+        <p class="muted small">Refunds are handled case-by-case. Clients may request refunds within 7 days of delivery for quality/format issues. Admin reviews requests and may approve or reject. This demo stores requests locally.</p>
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <button class="btn" id="viewPolicy">View Full Policy</button>
+          <button class="btn ghost" id="viewReviews">Read Reviews</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main sections (we'll show/hide these) -->
+    <main id="mainContent">
+      <!-- STORE -->
+      <section id="sectionStore" class="section card" style="display:block">
+        <h2>Store — Example Gifts</h2>
+        <p class="muted small">Demo prices applied.</p>
+        <div id="storeGrid" class="store-grid" style="margin-top:12px"></div>
+      </section>
+
+      <!-- UPLOAD -->
+      <section id="sectionUpload" class="section" style="display:none">
+        <h2>Upload Files for Your Order</h2>
+        <p class="muted small">Upload photos or short videos (local preview only). When you Book Now, a new Order will be created and visible in your Dashboard.</p>
+        <div class="card" style="max-width:900px">
+          <form id="uploadForm">
+            <div class="grid-2">
+              <input id="u_name" placeholder="Your name" required style="padding:10px;border-radius:8px;border:1px solid #eee">
+              <input id="u_contact" placeholder="Email or WhatsApp" required style="padding:10px;border-radius:8px;border:1px solid #eee">
+            </div>
+            <label style="display:block;margin-top:8px">
+              <input id="u_files" type="file" accept="image/*,video/*" multiple>
+            </label>
+            <div id="u_preview" class="muted small" style="margin-top:8px">No files selected.</div>
+            <textarea id="u_msg" placeholder="Short message for editor (optional)" style="width:100%;padding:10px;border-radius:8px;border:1px solid #eee;margin-top:8px"></textarea>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button class="btn" type="submit">Submit Upload</button>
+              <button class="btn ghost" type="button" id="u_clear">Clear</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- FEEDBACK -->
+      <section id="sectionFeedback" class="section" style="display:none">
+        <h2>Customer Feedback & Reviews</h2>
+        <div class="card" style="max-width:900px">
+          <form id="feedbackForm">
+            <div style="display:flex;gap:8px;margin-bottom:8px">
+              <input id="fb_name" placeholder="Your name" required style="flex:1;padding:10px;border-radius:8px;border:1px solid #eee">
+              <select id="fb_rating" style="width:160px;padding:10px;border-radius:8px;border:1px solid #eee">
+                <option value="5">5 — Excellent</option>
+                <option value="4">4 — Very Good</option>
+                <option value="3">3 — Good</option>
+                <option value="2">2 — Fair</option>
+                <option value="1">1 — Poor</option>
+              </select>
+            </div>
+            <textarea id="fb_comment" placeholder="Your comment" style="width:100%;padding:10px;border-radius:8px;border:1px solid #eee"></textarea>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <button class="btn" type="submit">Submit Review</button>
+              <button class="btn ghost" id="loadReviews" type="button">Load Sample Reviews</button>
+            </div>
+          </form>
+          <div id="reviewsList" style="margin-top:12px"></div>
+        </div>
+      </section>
+
+      <!-- TRACK -->
+      <section id="sectionTrack" class="section" style="display:none">
+        <h2>Track Your Order</h2>
+        <div class="card" style="max-width:720px">
+          <div style="display:flex;gap:8px">
+            <input id="trackId" placeholder="Enter Order ID (e.g. CLB001)" style="flex:1;padding:10px;border-radius:8px;border:1px solid #eee">
+            <button class="btn" id="btnTrack">Track</button>
+          </div>
+          <div id="trackResult" style="margin-top:12px"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Dashboard modal (Login leads to show dashboards inside modal) -->
+    <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+      <div class="modal" role="dialog" id="modalInner">
+        <!-- Login view -->
+        <div id="loginView">
+          <h2 style="margin-top:0">Login / Sign up</h2>
+          <p class="muted small">Choose role and sign in. (This demo uses frontend-only auth.)</p>
+          <div style="display:flex;gap:8px;margin-bottom:12px">
+            <button class="tab active" data-role="client">Client</button>
+            <button class="tab" data-role="admin">Admin</button>
+          </div>
+          <form id="loginForm">
+            <input id="login_name" placeholder="Your name" required style="width:100%;padding:10px;border-radius:8px;border:1px solid #eee;margin-bottom:8px">
+            <input id="login_email" placeholder="Email (for Client) or admin email" required style="width:100%;padding:10px;border-radius:8px;border:1px solid #eee;margin-bottom:8px">
+            <input id="login_pass" placeholder="Password (admin only - admin123)" type="password" style="width:100%;padding:10px;border-radius:8px;border:1px solid #eee;margin-bottom:8px">
+            <div style="display:flex;gap:8px">
+              <button class="btn" type="submit">Sign In</button>
+              <button class="btn ghost" type="button" id="closeLogin">Close</button>
+            </div>
+          </form>
+          <div class="muted small" style="margin-top:8px">Admin password: <b>admin123</b> (frontend demo)</div>
+        </div>
+
+        <!-- Admin dashboard -->
+        <div id="adminView" style="display:none">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <h2 style="margin:0">Admin Dashboard</h2>
+            <div style="display:flex;gap:8px;align-items:center">
+              <div class="muted small">Signed in as <span id="adminUser"></span></div>
+              <button class="btn ghost" id="adminLogout">Logout</button>
+            </div>
+          </div>
+          <div class="tabs" style="margin-top:12px">
+            <div class="tab active" data-admin-tab="orders">Orders</div>
+            <div class="tab" data-admin-tab="refunds">Refund Requests</div>
+            <div class="tab" data-admin-tab="uploads">Uploads</div>
+            <div class="tab" data-admin-tab="products">Products</div>
+            <div class="tab" data-admin-tab="feedback">Feedback</div>
+            <div class="tab" data-admin-tab="analytics">Analytics</div>
+          </div>
+
+          <div id="adminPanels" style="margin-top:12px">
+            <!-- Orders -->
+            <div class="admin-panel" data-panel="orders">
+              <h3>All Orders</h3>
+              <div id="adminOrders"></div>
+            </div>
+
+            <!-- Refunds -->
+            <div class="admin-panel" data-panel="refunds" style="display:none">
+              <h3>Refund Requests</h3>
+              <div id="adminRefunds"></div>
+            </div>
+
+            <!-- Uploads -->
+            <div class="admin-panel" data-panel="uploads" style="display:none">
+              <h3>Client Uploads</h3>
+              <div id="adminUploads"></div>
+            </div>
+
+            <!-- Products -->
+            <div class="admin-panel" data-panel="products" style="display:none">
+              <h3>Manage Products</h3>
+              <div style="display:flex;gap:8px;margin-bottom:8px">
+                <input id="new_title" placeholder="Title" style="flex:1;padding:8px;border-radius:8px;border:1px solid #eee">
+                <input id="new_price" placeholder="Price" style="width:120px;padding:8px;border-radius:8px;border:1px solid #eee">
+                <button class="btn" id="addProduct">Add</button>
+              </div>
+              <div id="adminProducts"></div>
+            </div>
+
+            <!-- Feedback -->
+            <div class="admin-panel" data-panel="feedback" style="display:none">
+              <h3>Feedback</h3>
+              <div id="adminFeedback"></div>
+            </div>
+
+            <!-- Analytics -->
+            <div class="admin-panel" data-panel="analytics" style="display:none">
+              <h3>Simple Analytics</h3>
+              <div id="adminAnalytics" class="muted small"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Client Dashboard -->
+        <div id="clientView" style="display:none">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <h2 style="margin:0">Client Dashboard</h2>
+            <div style="display:flex;gap:8px;align-items:center">
+              <div class="muted small">Signed in as <span id="clientUser"></span></div>
+              <button class="btn ghost" id="clientLogout">Logout</button>
+            </div>
+          </div>
+
+          <div class="tabs" style="margin-top:12px">
+            <div class="tab active" data-client-tab="orders">My Orders</div>
+            <div class="tab" data-client-tab="uploads">My Uploads</div>
+            <div class="tab" data-client-tab="track">Track</div>
+            <div class="tab" data-client-tab="refunds">Refunds</div>
+            <div class="tab" data-client-tab="ideas">Gift Ideas</div>
+          </div>
+
+          <div id="clientPanels" style="margin-top:12px">
+            <div class="client-panel" data-panel="orders">
+              <h3>My Orders</h3>
+              <div id="clientOrders"></div>
+            </div>
+            <div class="client-panel" data-panel="uploads" style="display:none">
+              <h3>My Uploads</h3>
+              <div id="clientUploads"></div>
+            </div>
+            <div class="client-panel" data-panel="track" style="display:none">
+              <h3>Track Order</h3>
+              <div style="display:flex;gap:8px">
+                <input id="clientTrackInput" placeholder="Order ID (CLB...)" style="flex:1;padding:8px;border-radius:8px;border:1px solid #eee">
+                <button class="btn" id="clientTrackBtn">Check</button>
+              </div>
+              <div id="clientTrackResult" style="margin-top:8px"></div>
+            </div>
+            <div class="client-panel" data-panel="refunds" style="display:none">
+              <h3>My Refund Requests</h3>
+              <div id="clientRefunds"></div>
+            </div>
+            <div class="client-panel" data-panel="ideas" style="display:none">
+              <h3>Gift Idea Generator</h3>
+              <div style="display:flex;gap:8px;align-items:center">
+                <select id="gi_person" style="padding:8px;border-radius:8px;border:1px solid #eee">
+                  <option value="friend">Friend</option>
+                  <option value="partner">Partner</option>
+                  <option value="parent">Parent</option>
+                  <option value="sibling">Sibling</option>
+                </select>
+                <select id="gi_occas" style="padding:8px;border-radius:8px;border:1px solid #eee">
+                  <option value="birthday">Birthday</option>
+                  <option value="anniversary">Anniversary</option>
+                  <option value="proposal">Proposal</option>
+                  <option value="farewell">Farewell</option>
+                </select>
+                <select id="gi_vibe" style="padding:8px;border-radius:8px;border:1px solid #eee">
+                  <option value="emotional">Emotional</option>
+                  <option value="fun">Fun</option>
+                  <option value="aesthetic">Aesthetic</option>
+                </select>
+                <button class="btn" id="gi_go">Suggest</button>
+              </div>
+              <div id="gi_result" style="margin-top:10px"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <footer style="margin-top:20px;padding-bottom:36px;text-align:center;color:var(--muted)" id="footer">
+      <div>© <strong>celebUmore</strong> • Moments become Memories</div>
+    </footer>
+  </div>
+
+  <!-- Cart & small elements -->
+  <button class="cart-btn" id="openCartBtn">Cart (<span id="cartCount">0</span>)</button>
+  <div class="cart-drawer card" id="cartDrawer" aria-hidden="true">
+    <h4 style="margin:0 0 8px">Your Cart</h4>
+    <div id="cartItems"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+      <div><b>Total:</b> <span id="cartTotal">₹0</span></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn" id="checkoutBtn">Book Now</button>
+        <button class="btn ghost" id="clearCart">Clear</button>
+      </div>
+    </div>
+  </div>
+    <script src="script.js"></script>
+</body>
+</html>
